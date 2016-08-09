@@ -1,4 +1,4 @@
-FROM haufelexware/wicked.portal-api:dev
+FROM haufelexware/wicked.portal-api:latest
 
 COPY . /tmp/portal-api
 
