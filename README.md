@@ -15,6 +15,8 @@ Okay. This assumes you have `docker` 1.12 and `docker-compose` 1.8.0 or later ru
 ```
 $ git clone https://github.com/Haufe-Lexware/wicked.deploy.sample
 ...
+$ cd wicked.deploy.sample
+$
 ```
 
 Edit `/etc/hosts` (or similar) to make `portal.local` and `api.portal.local` point to `127.0.0.1`.
@@ -22,21 +24,6 @@ Edit `/etc/hosts` (or similar) to make `portal.local` and `api.portal.local` poi
 ```
 $ source ./env.sh
 $ docker-compose up
-Creating wickeddeploysample_portal-api-data-static_1
-Creating wickeddeploysample_kongdb-data_1
-Creating wickeddeploysample_portal-api-data-dynamic_1
-Creating wickeddeploysample_kong-database_1
-Creating wickeddeploysample_portal-api_1
-Creating wickeddeploysample_kong_1
-Creating wickeddeploysample_portal-chatbot_1
-Creating wickeddeploysample_portal_1
-Creating wickeddeploysample_portal-mailer_1
-Creating wickeddeploysample_portal-kong-adapter_1
-Creating wickeddeploysample_publb_1
-Attaching to wickeddeploysample_portal-api-data-dynamic_1, wickeddeploysample_kongdb-data_1, wickeddeploysample_portal-api-data-static_1, wickeddeploysample_kong-database_1, wickeddeploysample_portal-api_1, wickeddeploysample_kong_1, wickeddeploysample_portal-mailer_1, wickeddeploysample_portal-chatbot_1, wickeddeploysample_portal_1, wickeddeploysample_portal-kong-adapter_1, wickeddeploysample_publb_1
-kong-database_1            | The files belonging to this database system will be owned by user "postgres".
-kong-database_1            | This user must also own the server process.
-kong-database_1            | 
 ...
 ```
 
