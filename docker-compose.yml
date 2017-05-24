@@ -47,7 +47,6 @@ services:
     - "EXCLUDE_PORTS=7946,8001,8443"
     - "EXTRA_SETTINGS=http-request set-header X-Forwarded-Port %[dst_port]"
     - "SSL_CERT=${GATEWAY_PEM}"
-    command: "dockerize -timeout 30s -wait tcp://kong-database:5432 kong start"
     restart: unless-stopped
 
   portal-api-data-static:
