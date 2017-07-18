@@ -1,1513 +1,1323 @@
 {
-"swagger": "2.0",
-"info": {
-"version": "0.0.2",
-"title": "Haufe Data Platform - HDP - API"
-},
-"host": "hdp-hub:1443",
-"basePath": "/hdp/api/v1",
-"schemes": [
-"https"
-],
-"consumes": [
-"application/json"
-],
-"produces": [
-"application/json",
-"application/hal+json"
-],
-"security": [
-{
-"Bearer": []
-},
-{
-"OAuth2": [
-"public",
-"admin",
-"paying",
-"agent",
-"system",
-"user",
-"client",
-"provider",
-"consumer",
-"portal"
-]
-},
-{
-"OAuth2Password": [
-"public",
-"admin",
-"paying",
-"agent",
-"system",
-"user",
-"client",
-"provider",
-"consumer",
-"portal"
-]
-}
-],
-"paths": {
-"/ping": {
-"get": {
-"tags": [
-"system"
-],
-"summary": "Verify that the server is responding ...",
-"operationId": "getPing",
-"parameters": [],
-"responses": {
-"200": {
-"description": "Everything is ok"
-},
-"default": {
-"description": "Server problems"
-}
-}
-}
-},
-"/query": {
-"get": {
-"tags": [
-"retrieval"
-],
-"operationId": "getQuery",
-"parameters": [
-{
-"name": "q",
-"in": "query",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Object"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-}
-}
-},
-"/sources": {
-"get": {
-"tags": [
-"sources"
-],
-"operationId": "getSources",
-"parameters": [
-{
-"name": "filter",
-"in": "query",
-"description": "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Sources"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "sources",
-"x-filter": true
-},
-"post": {
-"tags": [
-"sources"
-],
-"operationId": "postSources",
-"parameters": [
-{
-"in": "body",
-"name": "source",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Source"
-}
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "sources",
-"x-middleware": true
-}
-},
-"/sources/{id}": {
-"get": {
-"tags": [
-"sources"
-],
-"operationId": "getSource",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "sources"
-},
-"delete": {
-"tags": [
-"sources"
-],
-"operationId": "deleteSource",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK"
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "sources"
-},
-"patch": {
-"tags": [
-"sources"
-],
-"operationId": "patchSource",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-},
-{
-"in": "body",
-"name": "source",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Source"
-}
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "sources"
-}
-},
-"/storages": {
-"get": {
-"tags": [
-"storages"
-],
-"operationId": "getStorages",
-"parameters": [
-{
-"name": "filter",
-"in": "query",
-"description": "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Storages"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "storages",
-"x-filter": true
-},
-"post": {
-"tags": [
-"storages"
-],
-"operationId": "postStorages",
-"parameters": [
-{
-"in": "body",
-"name": "source",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Source"
-}
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "storages",
-"x-middleware": true
-}
-},
-"/storages/{id}": {
-"get": {
-"tags": [
-"storages"
-],
-"operationId": "getStorage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "storages"
-},
-"delete": {
-"tags": [
-"storages"
-],
-"operationId": "deleteStorage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK"
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "storages"
-},
-"patch": {
-"tags": [
-"storages"
-],
-"operationId": "patchStorage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-},
-{
-"in": "body",
-"name": "source",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Source"
-}
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Source"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "storages"
-}
-},
-"/websub": {
-"post": {
-"tags": [
-"subscriptions"
-],
-"description": "See https://www.w3.org/TR/websub/#subscriber-sends-subscription-request",
-"operationId": "postWebSub",
-"consumes": [
-"application/x-www-form-urlencoded"
-],
-"parameters": [
-{
-"name": "hub.callback",
-"in": "formData",
-"required": true,
-"type": "string"
-},
-{
-"name": "hub.mode",
-"in": "formData",
-"required": true,
-"type": "string"
-},
-{
-"name": "hub.topic",
-"in": "formData",
-"required": true,
-"type": "string"
-},
-{
-"name": "hub.lease_seconds",
-"in": "formData",
-"required": false,
-"type": "integer",
-"format": "int64"
-},
-{
-"name": "hub.secret",
-"in": "formData",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"202": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Subscriptions"
-}
-},
-"400": {
-"description": "Invalid Request Data",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-},
-"500": {
-"description": "Server Error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-}
-}
-},
-"/subscriptions": {
-"get": {
-"tags": [
-"subscriptions"
-],
-"operationId": "getSubscriptions",
-"parameters": [
-{
-"name": "filter",
-"in": "query",
-"description": "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Subscriptions"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "subscriptions",
-"x-filter": true
-},
-"post": {
-"tags": [
-"subscriptions"
-],
-"operationId": "postSubscriptions",
-"parameters": [
-{
-"in": "body",
-"name": "subscription",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Subscription"
-}
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Subscription"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "subscriptions",
-"x-middleware": true
-}
-},
-"/subscriptions/{id}": {
-"get": {
-"tags": [
-"subscriptions"
-],
-"operationId": "getSubscription",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Subscription"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "subscriptions"
-},
-"delete": {
-"tags": [
-"subscriptions"
-],
-"operationId": "deleteSubscription",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK"
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "subscriptions"
-},
-"patch": {
-"tags": [
-"subscriptions"
-],
-"operationId": "patchSubscription",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-},
-{
-"in": "body",
-"name": "subscription",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Subscription"
-}
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Subscription"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "subscriptions",
-"x-middleware": true
-}
-},
-"/deliveries": {
-"get": {
-"tags": [
-"deliveries"
-],
-"operationId": "getDeliveries",
-"parameters": [
-{
-"name": "filter",
-"in": "query",
-"description": "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Deliveries"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "deliveries",
-"x-filter": true
-},
-"post": {
-"tags": [
-"deliveries"
-],
-"operationId": "postDeliveries",
-"parameters": [
-{
-"in": "body",
-"name": "delivery",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Delivery"
-}
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Delivery"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "deliveries",
-"x-middleware": true
-}
-},
-"/deliveries/{id}": {
-"get": {
-"tags": [
-"deliveries"
-],
-"operationId": "getDelivery",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Delivery"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "deliveries"
-},
-"delete": {
-"tags": [
-"deliveries"
-],
-"operationId": "deleteDelivery",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK"
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "deliveries"
-},
-"patch": {
-"tags": [
-"deliveries"
-],
-"operationId": "patchDelivery",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-},
-{
-"in": "body",
-"name": "delivery",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Delivery"
-}
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Delivery"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "deliveries",
-"x-middleware": true
-}
-},
-"/packages": {
-"get": {
-"tags": [
-"packages"
-],
-"operationId": "getPackages",
-"parameters": [
-{
-"name": "filter",
-"in": "query",
-"description": "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
-"required": false,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Packages"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "packages",
-"x-filter": true
-},
-"post": {
-"tags": [
-"packages"
-],
-"description": "Sample usage: curl -v -X POST -T /tmp/temp.zip \"<uploadUrl>\"",
-"operationId": "postPackages",
-"parameters": [
-{
-"in": "body",
-"name": "package",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Package"
-}
-}
-],
-"responses": {
-"201": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Package"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "packages",
-"x-middleware": true
-}
-},
-"/packages/{id}": {
-"get": {
-"tags": [
-"packages"
-],
-"operationId": "getPackage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Package"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "packages"
-},
-"delete": {
-"tags": [
-"packages"
-],
-"operationId": "deletePackage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-}
-],
-"responses": {
-"200": {
-"description": "OK"
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "packages"
-},
-"patch": {
-"tags": [
-"packages"
-],
-"operationId": "patchPackage",
-"parameters": [
-{
-"name": "id",
-"in": "path",
-"required": true,
-"type": "string"
-},
-{
-"in": "body",
-"name": "package",
-"required": true,
-"schema": {
-"$ref": "#/definitions/Package"
-}
-}
-],
-"responses": {
-"200": {
-"description": "OK",
-"schema": {
-"$ref": "#/definitions/Package"
-}
-},
-"default": {
-"description": "Unexpected error",
-"schema": {
-"$ref": "#/definitions/Error"
-}
-}
-},
-"x-resource": "packages",
-"x-middleware": true
-}
-}
-},
-"securityDefinitions": {
-"Bearer": {
-"type": "apiKey",
-"name": "Authorization",
-"in": "header"
-},
-"OAuth2Password": {
-"type": "oauth2",
-"tokenUrl": "https://hdp-hub:1443/auth-server/hdp/token",
-"flow": "password",
-"scopes": {
-"public": "Anyone/Anything",
-"admin": "The usual god mode",
-"paying": "Resources or data for paying customers",
-"agent": "A system app",
-"system": "A system app",
-"user": "Some natural person",
-"client": "An application",
-"provider": "An application",
-"consumer": "An application",
-"portal": "The catalog app"
-}
-},
-"OAuth2": {
-"type": "oauth2",
-"tokenUrl": "https://hdp-hub:1443/hdp/api/v1/oauth2/token",
-"flow": "application",
-"scopes": {
-"public": "Anyone/Anything",
-"admin": "The usual god mode",
-"paying": "Resources or data for paying customers",
-"agent": "A system app",
-"system": "A system app",
-"user": "Some natural person",
-"client": "An application",
-"provider": "An application",
-"consumer": "An application",
-"portal": "The catalog app"
-}
-}
-},
-"definitions": {
-"Base": {
-"type": "object",
-"properties": {
-"id": {
-"type": "string"
-},
-"user": {
-"type": "string"
-},
-"group": {
-"type": "string"
-},
-"_links": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/HALLink"
-}
-}
-}
-},
-"Storage": {
-"allOf": [
-{
-"$ref": "#/definitions/Base"
-},
-{
-"type": "object",
-"properties": {
-"name": {
-"type": "string"
-},
-"alias": {
-"type": "string"
-},
-"description": {
-"type": "string"
-}
-},
-"example": {
-"id": "<managed by hdp-hub>",
-"name": "Some Source",
-"description": "About this Storage ..."
-},
-"x-resource": "storages"
-}
-]
-},
-"Source": {
-"allOf": [
-{
-"$ref": "#/definitions/Base"
-},
-{
-"type": "object",
-"properties": {
-"name": {
-"type": "string"
-},
-"alias": {
-"type": "string"
-},
-"description": {
-"type": "string"
-},
-"userId": {
-"type": "string",
-"description": "The user id of the owner of this source"
-},
-"clientId": {
-"type": "string",
-"description": "The id of the provider 'app' that will be sending the data packages"
-},
-"userMeta": {
-"type": "array",
-"items": {
-"type": "string"
-}
-},
-"conditions": {
-"type": "array",
-"description": "Conditions for a subscription request to succeed. Example \"scopes:paying,news\"",
-"items": {
-"type": "string"
-}
-},
-"storageId": {
-"type": "string",
-"description": "The id of the storage service to use for packages"
-},
-"pipeline": {
-"type": "string"
-},
-"packageMimetype": {
-"type": "string"
-},
-"packageValidationData": {
-"type": "string"
-},
-"notificationUrl": {
-"type": "string"
-},
-"notificationCredentials": {
-"type": "string"
-}
-},
-"example": {
-"id": "<managed by hdp-hub>",
-"clientId": 4711,
-"name": "Some Source",
-"description": "About this Source ...",
-"userMeta": [
-"name1:value1",
-"name2:value2"
-]
-},
-"x-resource": "sources"
-}
-]
-},
-"Package": {
-"allOf": [
-{
-"$ref": "#/definitions/Base"
-},
-{
-"type": "object",
-"properties": {
-"version": {
-"type": "string"
-},
-"sourceId": {
-"type": "string"
-},
-"artifactId": {
-"type": "string"
-},
-"uploadUrl": {
-"type": "string"
-},
-"comment": {
-"type": "string"
-},
-"description": {
-"type": "string"
-},
-"fileName": {
-"type": "string"
-},
-"created": {
-"type": "string"
-},
-"orgFileName": {
-"type": "string"
-},
-"delay": {
-"type": "integer",
-"format": "int32"
-},
-"numDeliveries": {
-"type": "integer",
-"format": "int32"
-},
-"result": {
-"type": "string"
-},
-"pipeline": {
-"type": "string"
-},
-"pipelineState": {
-"type": "string"
-},
-"pipelineSteps": {
-"type": "array",
-"items": {
-"type": "string"
-}
-},
-"pipelineStep": {
-"type": "integer",
-"format": "int32"
-},
-"pipelineStepTry": {
-"type": "integer",
-"format": "int32"
-},
-"pipelineResults": {
-"type": "array",
-"items": {
-"type": "string"
-}
-},
-"userMeta": {
-"type": "array",
-"items": {
-"type": "string"
-}
-}
-},
-"example": {
-"id": "<managed by hdp-hub>",
-"sourceId": 12345,
-"artifactId": 67890,
-"state": "PENDING",
-"intent": "PROCESS",
-"version": "7890 1480427976",
-"uploadUrl": "<managed by hdp-hub>",
-"comment": "<managed by hdp-hub>",
-"description": "About this Package ...",
-"fileName": "temp.zip",
-"orgFileName": "temp.zip",
-"mediaType": "application/zip",
-"delay": "<managed by hdp-hub>",
-"result": "<managed by hdp-hub>",
-"userMeta": [
-"name1:value1",
-"name2:value2"
-]
-},
-"x-resource": "packages"
-}
-]
-},
-"Delivery": {
-"allOf": [
-{
-"$ref": "#/definitions/Base"
-},
-{
-"type": "object",
-"properties": {
-"subscriptionId": {
-"type": "string"
-},
-"packageId": {
-"type": "string"
-},
-"state": {
-"type": "string"
-},
-"expires_in": {
-"type": "integer",
-"format": "int32"
-},
-"expires_at": {
-"type": "integer",
-"format": "int32"
-},
-"downloadUrl": {
-"type": "string"
-},
-"description": {
-"type": "string"
-}
-},
-"example": {
-"id": "<managed by hdp-hub>",
-"subscriptionId": 4711,
-"packageId": 4711,
-"state": "PENDING",
-"downloadUrl": "schema://some.domain.net/path",
-"description": "About this Delivery ..."
-},
-"x-resource": "deliveries"
-}
-]
-},
-"Subscription": {
-"allOf": [
-{
-"$ref": "#/definitions/Base"
-},
-{
-"type": "object",
-"properties": {
-"clientId": {
-"type": "string",
-"description": "The id of the consumer 'app' that will be receiving the data packages"
-},
-"sourceId": {
-"type": "string"
-},
-"description": {
-"type": "string"
-},
-"userId": {
-"type": "string",
-"description": "The user id of the owner of this subscription"
-},
-"state": {
-"type": "string",
-"description": "pending|active|declined|cancelled"
-},
-"type": {
-"type": "string",
-"description": "One of (try|guaranteed|...)"
-},
-"notificationUrl": {
-"type": "string"
-},
-"notificationCredentials": {
-"type": "string"
-}
-},
-"example": {
-"id": "<managed by hdp-hub>",
-"consumerId": 4711,
-"sourceId": 4711,
-"description": "About this Subscription ...",
-"notificationUrl": "https://some.domain.net/hook/path",
-"notificationCredentials": "xxx@xxx"
-},
-"x-resource": "subscriptions"
-}
-]
-},
-"List": {
-"type": "object",
-"properties": {
-"count": {
-"type": "integer",
-"format": "int32"
-},
-"total": {
-"type": "integer",
-"format": "int32"
-},
-"_links": {
-"type": "object",
-"properties": {}
-}
-}
-},
-"Sources": {
-"allOf": [
-{
-"$ref": "#/definitions/List"
-},
-{
-"type": "object",
-"properties": {
-"_embedded": {
-"$ref": "#/definitions/Sources__embedded"
-}
-}
-}
-]
-},
-"Storages": {
-"allOf": [
-{
-"$ref": "#/definitions/List"
-},
-{
-"type": "object",
-"properties": {
-"_embedded": {
-"$ref": "#/definitions/Storages__embedded"
-}
-}
-}
-]
-},
-"Subscriptions": {
-"allOf": [
-{
-"$ref": "#/definitions/List"
-},
-{
-"type": "object",
-"properties": {
-"_embedded": {
-"$ref": "#/definitions/Subscriptions__embedded"
-}
-}
-}
-]
-},
-"Deliveries": {
-"allOf": [
-{
-"$ref": "#/definitions/List"
-},
-{
-"type": "object",
-"properties": {
-"_embedded": {
-"$ref": "#/definitions/Deliveries__embedded"
-}
-}
-}
-]
-},
-"Packages": {
-"allOf": [
-{
-"$ref": "#/definitions/List"
-},
-{
-"type": "object",
-"properties": {
-"_embedded": {
-"$ref": "#/definitions/Packages__embedded"
-}
-}
-}
-]
-},
-"Error": {
-"type": "object",
-"properties": {
-"code": {
-"type": "integer",
-"format": "int32"
-},
-"message": {
-"type": "string"
-},
-"fields": {
-"type": "string"
-}
-}
-},
-"HALLink": {
-"type": "object",
-"properties": {
-"href": {
-"type": "string",
-"description": "the full reference to a related resource"
-},
-"name": {
-"type": "string",
-"description": "a reference to a related resource as secondary identifier"
-},
-"title": {
-"type": "string",
-"description": "a human readable reference to a related resource"
-},
-"type": {
-"type": "string",
-"description": "the specific content-type including version and concept"
-}
-},
-"description": "the HAL link is specified in the specification chapter 5"
-},
-"Object": {
-"type": "object",
-"description": "a definition to be used with \"patch\""
-},
-"Sources__embedded": {
-"properties": {
-"sources": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/Source"
-}
-}
-}
-},
-"Storages__embedded": {
-"properties": {
-"sources": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/Storage"
-}
-}
-}
-},
-"Subscriptions__embedded": {
-"properties": {
-"subscriptions": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/Subscription"
-}
-}
-}
-},
-"Deliveries__embedded": {
-"properties": {
-"deliveries": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/Delivery"
-}
-}
-}
-},
-"Packages__embedded": {
-"properties": {
-"packages": {
-"type": "array",
-"items": {
-"$ref": "#/definitions/Package"
-}
-}
-}
-}
-}
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "0.0.2",
+    "title" : "Haufe Data Platform - HDP - API"
+  },
+  "host" : "hdp-hub:1443",
+  "basePath" : "/hdp/api/v1",
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json", "application/hal+json" ],
+  "security" : [ {
+    "Bearer" : [ ]
+  }, {
+    "OAuth2" : [ "public", "admin", "paying", "agent", "system", "user", "client", "provider", "consumer", "portal" ]
+  }, {
+    "OAuth2Password" : [ "public", "admin", "paying", "agent", "system", "user", "client", "provider", "consumer", "portal" ]
+  } ],
+  "paths" : {
+    "/ping" : {
+      "get" : {
+        "tags" : [ "system" ],
+        "summary" : "Verify that the server is responding ...",
+        "operationId" : "getPing",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Everything is ok"
+          },
+          "default" : {
+            "description" : "Server problems"
+          }
+        }
+      }
+    },
+    "/query" : {
+      "get" : {
+        "tags" : [ "retrieval" ],
+        "operationId" : "getQuery",
+        "parameters" : [ {
+          "name" : "q",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Object"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/sources" : {
+      "get" : {
+        "tags" : [ "sources" ],
+        "operationId" : "getSources",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Sources"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "sources",
+        "x-filter" : true
+      },
+      "post" : {
+        "tags" : [ "sources" ],
+        "operationId" : "postSources",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "source",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Source"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "sources",
+        "x-middleware" : true
+      }
+    },
+    "/sources/{id}" : {
+      "get" : {
+        "tags" : [ "sources" ],
+        "operationId" : "getSource",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "sources"
+      },
+      "delete" : {
+        "tags" : [ "sources" ],
+        "operationId" : "deleteSource",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "sources"
+      },
+      "patch" : {
+        "tags" : [ "sources" ],
+        "operationId" : "patchSource",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "source",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Source"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "sources"
+      }
+    },
+    "/storages" : {
+      "get" : {
+        "tags" : [ "storages" ],
+        "operationId" : "getStorages",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Storages"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "storages",
+        "x-filter" : true
+      },
+      "post" : {
+        "tags" : [ "storages" ],
+        "operationId" : "postStorages",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "source",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Source"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "storages",
+        "x-middleware" : true
+      }
+    },
+    "/storages/{id}" : {
+      "get" : {
+        "tags" : [ "storages" ],
+        "operationId" : "getStorage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "storages"
+      },
+      "delete" : {
+        "tags" : [ "storages" ],
+        "operationId" : "deleteStorage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "storages"
+      },
+      "patch" : {
+        "tags" : [ "storages" ],
+        "operationId" : "patchStorage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "source",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Source"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Source"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "storages"
+      }
+    },
+    "/websub" : {
+      "post" : {
+        "tags" : [ "subscriptions" ],
+        "description" : "See https://www.w3.org/TR/websub/#subscriber-sends-subscription-request",
+        "operationId" : "postWebSub",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "parameters" : [ {
+          "name" : "hub.callback",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "hub.mode",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "hub.topic",
+          "in" : "formData",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "hub.lease_seconds",
+          "in" : "formData",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64"
+        }, {
+          "name" : "hub.secret",
+          "in" : "formData",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Subscriptions"
+            }
+          },
+          "400" : {
+            "description" : "Invalid Request Data",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "500" : {
+            "description" : "Server Error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions" : {
+      "get" : {
+        "tags" : [ "subscriptions" ],
+        "operationId" : "getSubscriptions",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Subscriptions"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "subscriptions",
+        "x-filter" : true
+      },
+      "post" : {
+        "tags" : [ "subscriptions" ],
+        "operationId" : "postSubscriptions",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "subscription",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Subscription"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Subscription"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "subscriptions",
+        "x-middleware" : true
+      }
+    },
+    "/subscriptions/{id}" : {
+      "get" : {
+        "tags" : [ "subscriptions" ],
+        "operationId" : "getSubscription",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Subscription"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "subscriptions"
+      },
+      "delete" : {
+        "tags" : [ "subscriptions" ],
+        "operationId" : "deleteSubscription",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "subscriptions"
+      },
+      "patch" : {
+        "tags" : [ "subscriptions" ],
+        "operationId" : "patchSubscription",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "subscription",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Subscription"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Subscription"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "subscriptions",
+        "x-middleware" : true
+      }
+    },
+    "/deliveries" : {
+      "get" : {
+        "tags" : [ "deliveries" ],
+        "operationId" : "getDeliveries",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Deliveries"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "deliveries",
+        "x-filter" : true
+      },
+      "post" : {
+        "tags" : [ "deliveries" ],
+        "operationId" : "postDeliveries",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "delivery",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Delivery"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Delivery"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "deliveries",
+        "x-middleware" : true
+      }
+    },
+    "/deliveries/{id}" : {
+      "get" : {
+        "tags" : [ "deliveries" ],
+        "operationId" : "getDelivery",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Delivery"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "deliveries"
+      },
+      "delete" : {
+        "tags" : [ "deliveries" ],
+        "operationId" : "deleteDelivery",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "deliveries"
+      },
+      "patch" : {
+        "tags" : [ "deliveries" ],
+        "operationId" : "patchDelivery",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "delivery",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Delivery"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Delivery"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "deliveries",
+        "x-middleware" : true
+      }
+    },
+    "/packages" : {
+      "get" : {
+        "tags" : [ "packages" ],
+        "operationId" : "getPackages",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "RQL filter. See https://github.com/persvr/rql/blob/master/README.md",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Packages"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "packages",
+        "x-filter" : true
+      },
+      "post" : {
+        "tags" : [ "packages" ],
+        "description" : "Sample usage: curl -v -X POST -T /tmp/temp.zip \"<uploadUrl>\"",
+        "operationId" : "postPackages",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "package",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Package"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Package"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "packages",
+        "x-middleware" : true
+      }
+    },
+    "/packages/{id}" : {
+      "get" : {
+        "tags" : [ "packages" ],
+        "operationId" : "getPackage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Package"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "packages"
+      },
+      "delete" : {
+        "tags" : [ "packages" ],
+        "operationId" : "deletePackage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "packages"
+      },
+      "patch" : {
+        "tags" : [ "packages" ],
+        "operationId" : "patchPackage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "package",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Package"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "$ref" : "#/definitions/Package"
+            }
+          },
+          "default" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-resource" : "packages",
+        "x-middleware" : true
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "OAuth2" : {
+      "type" : "oauth2",
+      "tokenUrl" : "https://hdp-hub:1443/hdp/api/v1/oauth2/token",
+      "flow" : "application",
+      "scopes" : {
+        "public" : "Anyone/Anything",
+        "admin" : "The usual god mode",
+        "paying" : "Resources or data for paying customers",
+        "agent" : "A system app",
+        "system" : "A system app",
+        "user" : "Some natural person",
+        "client" : "An application",
+        "provider" : "An application",
+        "consumer" : "An application",
+        "portal" : "The catalog app"
+      }
+    },
+    "OAuth2Password" : {
+      "type" : "oauth2",
+      "tokenUrl" : "https://hdp-hub:1443/auth-server/hdp/token",
+      "flow" : "password",
+      "scopes" : {
+        "public" : "Anyone/Anything",
+        "admin" : "The usual god mode",
+        "paying" : "Resources or data for paying customers",
+        "agent" : "A system app",
+        "system" : "A system app",
+        "user" : "Some natural person",
+        "client" : "An application",
+        "provider" : "An application",
+        "consumer" : "An application",
+        "portal" : "The catalog app"
+      }
+    },
+    "Bearer" : {
+      "type" : "apiKey",
+      "name" : "Authorization",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "Base" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "user" : {
+          "type" : "string"
+        },
+        "group" : {
+          "type" : "string"
+        },
+        "_links" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/HALLink"
+          }
+        }
+      }
+    },
+    "Storage" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Base"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "alias" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "id" : "<managed by hdp-hub>",
+          "name" : "Some Source",
+          "description" : "About this Storage ..."
+        },
+        "x-resource" : "storages"
+      } ]
+    },
+    "Source" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Base"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "alias" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "The user id of the owner of this source"
+          },
+          "clientId" : {
+            "type" : "string",
+            "description" : "The id of the provider 'app' that will be sending the data packages"
+          },
+          "userMeta" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "conditions" : {
+            "type" : "array",
+            "description" : "Conditions for a subscription request to succeed. Example \"scopes:paying,news\"",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "storageId" : {
+            "type" : "string",
+            "description" : "The id of the storage service to use for packages"
+          },
+          "pipeline" : {
+            "type" : "string"
+          },
+          "packageMimetype" : {
+            "type" : "string"
+          },
+          "packageValidationData" : {
+            "type" : "string"
+          },
+          "notificationUrl" : {
+            "type" : "string"
+          },
+          "notificationCredentials" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "id" : "<managed by hdp-hub>",
+          "clientId" : 4711,
+          "name" : "Some Source",
+          "description" : "About this Source ...",
+          "userMeta" : [ "name1:value1", "name2:value2" ]
+        },
+        "x-resource" : "sources"
+      } ]
+    },
+    "Package" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Base"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "type" : "string"
+          },
+          "sourceId" : {
+            "type" : "string"
+          },
+          "artifactId" : {
+            "type" : "string"
+          },
+          "uploadUrl" : {
+            "type" : "string"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "fileName" : {
+            "type" : "string"
+          },
+          "created" : {
+            "type" : "string"
+          },
+          "orgFileName" : {
+            "type" : "string"
+          },
+          "delay" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "numDeliveries" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "result" : {
+            "type" : "string"
+          },
+          "pipeline" : {
+            "type" : "string"
+          },
+          "pipelineState" : {
+            "type" : "string"
+          },
+          "pipelineSteps" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "pipelineStep" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pipelineStepTry" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pipelineResults" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "userMeta" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "example" : {
+          "id" : "<managed by hdp-hub>",
+          "sourceId" : 12345,
+          "artifactId" : 67890,
+          "state" : "PENDING",
+          "intent" : "PROCESS",
+          "version" : "7890 1480427976",
+          "uploadUrl" : "<managed by hdp-hub>",
+          "comment" : "<managed by hdp-hub>",
+          "description" : "About this Package ...",
+          "fileName" : "temp.zip",
+          "orgFileName" : "temp.zip",
+          "mediaType" : "application/zip",
+          "delay" : "<managed by hdp-hub>",
+          "result" : "<managed by hdp-hub>",
+          "userMeta" : [ "name1:value1", "name2:value2" ]
+        },
+        "x-resource" : "packages"
+      } ]
+    },
+    "Delivery" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Base"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "subscriptionId" : {
+            "type" : "string"
+          },
+          "packageId" : {
+            "type" : "string"
+          },
+          "state" : {
+            "type" : "string"
+          },
+          "expires_in" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "expires_at" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "downloadUrl" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "id" : "<managed by hdp-hub>",
+          "subscriptionId" : 4711,
+          "packageId" : 4711,
+          "state" : "PENDING",
+          "downloadUrl" : "schema://some.domain.net/path",
+          "description" : "About this Delivery ..."
+        },
+        "x-resource" : "deliveries"
+      } ]
+    },
+    "Subscription" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Base"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "clientId" : {
+            "type" : "string",
+            "description" : "The id of the consumer 'app' that will be receiving the data packages"
+          },
+          "sourceId" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "The user id of the owner of this subscription"
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "pending|active|declined|cancelled"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "One of (try|guaranteed|...)"
+          },
+          "notificationUrl" : {
+            "type" : "string"
+          },
+          "notificationCredentials" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "id" : "<managed by hdp-hub>",
+          "consumerId" : 4711,
+          "sourceId" : 4711,
+          "description" : "About this Subscription ...",
+          "notificationUrl" : "https://some.domain.net/hook/path",
+          "notificationCredentials" : "xxx@xxx"
+        },
+        "x-resource" : "subscriptions"
+      } ]
+    },
+    "List" : {
+      "type" : "object",
+      "properties" : {
+        "count" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "total" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "_links" : {
+          "type" : "object",
+          "properties" : { }
+        }
+      }
+    },
+    "Sources" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/List"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/definitions/Sources__embedded"
+          }
+        }
+      } ]
+    },
+    "Storages" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/List"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/definitions/Storages__embedded"
+          }
+        }
+      } ]
+    },
+    "Subscriptions" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/List"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/definitions/Subscriptions__embedded"
+          }
+        }
+      } ]
+    },
+    "Deliveries" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/List"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/definitions/Deliveries__embedded"
+          }
+        }
+      } ]
+    },
+    "Packages" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/List"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "$ref" : "#/definitions/Packages__embedded"
+          }
+        }
+      } ]
+    },
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "fields" : {
+          "type" : "string"
+        }
+      }
+    },
+    "HALLink" : {
+      "type" : "object",
+      "properties" : {
+        "href" : {
+          "type" : "string",
+          "description" : "the full reference to a related resource"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "a reference to a related resource as secondary identifier"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "a human readable reference to a related resource"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "the specific content-type including version and concept"
+        }
+      },
+      "description" : "the HAL link is specified in the specification chapter 5"
+    },
+    "Object" : {
+      "type" : "object",
+      "description" : "a definition to be used with \"patch\""
+    },
+    "Sources__embedded" : {
+      "properties" : {
+        "sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Source"
+          }
+        }
+      }
+    },
+    "Storages__embedded" : {
+      "properties" : {
+        "sources" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Storage"
+          }
+        }
+      }
+    },
+    "Subscriptions__embedded" : {
+      "properties" : {
+        "subscriptions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Subscription"
+          }
+        }
+      }
+    },
+    "Deliveries__embedded" : {
+      "properties" : {
+        "deliveries" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Delivery"
+          }
+        }
+      }
+    },
+    "Packages__embedded" : {
+      "properties" : {
+        "packages" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Package"
+          }
+        }
+      }
+    }
+  }
 }
